@@ -5,6 +5,8 @@ const router = express.Router()
 const pexec = require('@naiveroboticist/pexec')
 const fs = require('fs')
 
+const RRD_FILE = process.env.HYDROCTL_RRD || 'joe.rrd'
+
 //
 // Return the current time as the number of seconds
 // since the epoch.
@@ -39,9 +41,15 @@ router.get('/image', function(req, res, next) {
   let measure = req.query.measure
   let fname = '/tmp/' + measure + '-' + numHours + '.png'
 
-  // pexec.pexec('rrdtool graph /tmp/light.png --start ' + epochTime('2016-09-30T09:00:00') + ' --end ' + now() + ' --lower-limit 0 DEF:light=readings.rrd:inside-light:AVERAGE LINE1:light#0000FF:Light')
-  let cmd = 'rrdtool graph ' + fname + ' --start ' + hoursAgo(numHours) + ' --end ' + now() + ' --lower-limit 0 DEF:value=readings.rrd:' + measure + ':AVERAGE LINE1:value#0000FF:' + measure
+  let cmd = 'rrdtool graph ' + 
+    fname + 
+    ' --start ' + hoursAgo(numHours) + 
+    ' --end ' + now() + 
+    ' --lower-limit 0 DEF:value=' + 
+    RRD_FILE + ':' + measure + ':AVERAGE LINE1:value#0000FF:' + measure
+
   console.log('The command: %s', cmd)
+
   pexec.pexec(cmd)
     .then(() => {
       fs.readFile(fname, function(err, buffer) {

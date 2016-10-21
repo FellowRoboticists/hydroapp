@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1= title
+
   h2 Light
   p 4 hour's worth
   img(src='/images/image?hours=4&measure=inside-light')
@@ -9,6 +10,7 @@ block content
   img(src='/images/image?hours=24&measure=inside-light')
   p 1 week's worth
   img(src='/images/image?hours=168&measure=inside-light')
+
   h2 Temperature
   p 4 hour's worth
   img(src='/images/image?hours=4&measure=inside-temp')
@@ -16,3 +18,11 @@ block content
   img(src='/images/image?hours=24&measure=inside-temp')
   p 1 week's worth
   img(src='/images/image?hours=168&measure=inside-temp')
+
+  h2 Humidity
+  p 4 hour's worth
+  img(src='/images/image?hours=4&measure=inside-humidity')
+  p 24 hour's worth
+  img(src='/images/image?hours=24&measure=inside-humidity')
+  p 1 week's worth
+  img(src='/images/image?hours=168&measure=inside-humidity')

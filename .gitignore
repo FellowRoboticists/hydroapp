@@ -35,3 +35,6 @@ bak
 
 # RRD data files
 *.rrd
+
+# Configuration files
+environment-variables
