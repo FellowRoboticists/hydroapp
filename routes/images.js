@@ -40,13 +40,22 @@ router.get('/image', function(req, res, next) {
   let numHours = parseInt(req.query.hours)
   let measure = req.query.measure
   let fname = '/tmp/' + measure + '-' + numHours + '.png'
+  let min = parseInt(req.query.min)
 
   let cmd = 'rrdtool graph ' + 
     fname + 
     ' --start ' + hoursAgo(numHours) + 
     ' --end ' + now() + 
-    ' --lower-limit 0 DEF:value=' + 
-    RRD_FILE + ':' + measure + ':AVERAGE LINE1:value#0000FF:' + measure
+    ' --lower-limit 0 ' + 
+    'DEF:ave=' + RRD_FILE + ':' + measure + ':AVERAGE ' + 
+    'DEF:min=' + RRD_FILE + ':' + measure + ':MIN ' + 
+    // 'DEF:max=' + RRD_FILE + ':' + measure + ':MAX ' + 
+    ' LINE1:ave#0000FF:' + measure + '-average' +
+    ' LINE2:min#FF00FF:' + measure + '-minimum'
+    // ' LINE3:max#00FFFF:' + measure
+  if (min > 0) {
+    cmd += ' HRULE:' + min + '#00ffff:"Minimum Safe"'
+  }
 
   console.log('The command: %s', cmd)
 
