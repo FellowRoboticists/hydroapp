@@ -59,6 +59,11 @@ router.get('/image', function(req, res, next) {
 
   console.log('The command: %s', cmd)
 
+  // This is how you have to fiddle the graph to display
+  // the x-axis in the mountain timezone. Seems a bli
+  // wacky, but it works.
+  process.env.TZ = 'America/Denver'
+
   pexec.pexec(cmd)
     .then(() => {
       fs.readFile(fname, function(err, buffer) {
